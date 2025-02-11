@@ -189,12 +189,40 @@ async def _main(error_log=None, profiler=None):
             profiler=profiler,
         )
 
+class Profile:
+    def __init__(self):
+        self._dict = {}
+
+
+    def __setitem__(self, key, item):
+        self._dict[key] = item
+
+
+    def __getitem__(self, key):
+        return self._dict[key]
+       
+
+    def __contains__(self, item):
+        return item in self._dict
+    
+    def items(self):
+        return self._dict.items()
+    
+
+
+
+
+
+
+
+
+
 
 def build_mocks():
     start = time.perf_counter()
     try:
         error_log = [] if not args.fail_fast else None
-        profiler = {}
+        profiler = Profile()
         asyncio.run(_main(error_log, profiler))
     finally:
         from operator import itemgetter
